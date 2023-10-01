@@ -23,14 +23,14 @@ pipeline {
         stage('Delete HTML files on Server') {
             steps {
                 // Execute shell commands to delete HTML files on the server.
-                sh 'ssh student@10.10.10.52 "cd /var/www/html && rm -f *.html"'
+                sh 'ssh student@10.10.10.50 "cd /var/www/html && rm -f *.html"'
             }
         }
 
         stage('Copy HTML files to Server') {
             steps {
                 // Copy HTML files from the checked-out repository to the server.
-                sh 'scp -r /var/lib/jenkins/caches/git-a660bf4669a1e2454fe8754a08ca571a.html student@10.10.10.52:/var/www/html'
+                sh 'scp -r /var/lib/jenkins/caches/git-a660bf4669a1e2454fe8754a08ca571a.html student@10.10.10.50:/var/www/html'
             }
         }
     }
