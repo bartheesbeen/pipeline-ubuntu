@@ -27,9 +27,4 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            input "Wil je doorgaan met het deployen naar de productie server?"
-        }
-    }
 }
