@@ -2,10 +2,20 @@ pipeline {
     agent any
 
     stages {
+        stage('Set Git Credentials') {
+            steps {
+                script {
+                    // Stel de Git-gebruikersnaam en het Git-wachtwoord in
+                    sh "git config --global user.name 'jouw_gebruikersnaam'"
+                    sh "git config --global user.password 'jouw_wachtwoord'"
+                }
+            }
+        }
+
         stage('Checkout from GitHub') {
             steps {
                 // Check out your code from GitHub in the "test" branch.
-                checkout([$class: 'GitSCM', branches: [[name: 'test']], userRemoteConfigs: [[url: 'https://github.com/bartheesbeen/pipeline-ubuntu']]])
+                checkout([$class: 'GitSCM', branches: [[name: 'test']], userRemoteConfigs: [[url: 'https://github.com/bartheesbeen/pipeline-ubuntu.git']]])
             }
         }
 
@@ -33,9 +43,4 @@ pipeline {
                     sh "git config user.email '509679@student.fontys.nl'"
                     sh "git checkout ${mainBranchName}" // Schakel over naar de main branch
                     sh "git merge ${testBranchName} -m 'Merge test branch into main'" // Voer een merge uit van de test branch naar main
-                    sh "git push origin ${mainBranchName}" // Push de wijzigingen naar de main branch
-                }
-            }
-        }
-    }
-}
+                    sh "git push origin ${mainBranchName}" // Push de wijzigingen naar de
