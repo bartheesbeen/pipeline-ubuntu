@@ -23,7 +23,7 @@ pipeline {
         stage('Overwrite HTML files on Test Server') {
             steps {
                 // Copy HTML files from the checked-out repository to the server, overwriting existing files.
-                sh 'sshpass -p student scp -r /var/lib/jenkins/workspace/Pipeline_test/*.html student@10.10.10.53:/var/www/html/'
+                sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Pipeline_test/index.html student@10.10.10.53:/var/www/html/'
             }
         }
     }
