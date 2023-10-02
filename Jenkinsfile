@@ -29,28 +29,7 @@ pipeline {
     }
     post {
         always {
-            script {
-                def userInput = input(
-                    message: 'Wil je doorgaan met het deployen naar de test server?',
-                    parameters: [
-                        [$class: 'BooleanParameterDefinition', defaultValue: true, description: 'Doorgaan?', name: 'DeployToTest']
-                    ]
-                )
-
-                if (userInput == true) {
-                    // Check if the 'test' branch exists locally, and create it if not
-                    def branchExists = sh(script: 'git show-ref --verify --quiet refs/heads/test', returnStatus: true)
-                    if (branchExists != 0) {
-                        sh 'git checkout -b test'
-                    }
-
-                    // Push to the 'test' branch
-                    sh 'git push origin test'
-                } else {
-                    currentBuild.result = 'ABORTED'
-                    error('Deployment naar test geannuleerd')
-                }
-            }
+            input "Wil je doorgaan met het deployen naar de test server?"
         }
     }
 }
