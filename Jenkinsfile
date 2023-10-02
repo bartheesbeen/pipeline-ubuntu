@@ -38,7 +38,13 @@ pipeline {
                 )
 
                 if (userInput == true) {
-                    // Push naar de 'test'-branch in de externe repository
+                    // Check if the 'test' branch exists locally, and create it if not
+                    def branchExists = sh(script: 'git show-ref --verify --quiet refs/heads/test', returnStatus: true)
+                    if (branchExists != 0) {
+                        sh 'git checkout -b test'
+                    }
+
+                    // Push to the 'test' branch
                     sh 'git push origin test'
                 } else {
                     currentBuild.result = 'ABORTED'
