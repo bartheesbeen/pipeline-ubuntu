@@ -6,8 +6,8 @@ pipeline {
             steps {
                 script {
                     // Stel de Git-gebruikersnaam en het Git-wachtwoord in
-                    sh "git config --global user.name 'jouw_gebruikersnaam'"
-                    sh "git config --global user.password 'jouw_wachtwoord'"
+                    sh "git config --global user.name 'bartheesbeen'"
+                    sh "git config --global user.password 'Koekje600!'"
                 }
             }
         }
