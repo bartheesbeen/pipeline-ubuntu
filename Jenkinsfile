@@ -33,7 +33,7 @@ pipeline {
                 def userInput = input(
                     id: 'deployToTest',
                     message: 'Wil je doorgaan met het deployen naar de test server?',
-                    parameters: [boolean(defaultValue: true, description: 'Doorgaan?', name: 'DeployToTest')]
+                    parameters: [booleanParam(defaultValue: true, description: 'Doorgaan?', name: 'DeployToTest')]
                 )
 
                 if (userInput.DeployToTest) {
