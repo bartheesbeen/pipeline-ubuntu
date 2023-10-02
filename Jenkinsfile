@@ -25,14 +25,21 @@ pipeline {
         stage('Push to Main Branch') {
             steps {
                 script {
-                    def branchName = 'main'
-                    def gitCredentials = credentials('f9b6e8ca-d43d-43ae-9939-1798f9273bf7') // Replace with your Git credentials ID
-                    checkout([$class: 'GitSCM', branches: [[name: branchName]], userRemoteConfigs: [[url: 'https://github.com/bartheesbeen/pipeline-ubuntu.git']]])
+                    def testBranchName = 'test'
+                    def mainBranchName = 'main'
+                    
+                    // Controleer of Jenkins zich in de juiste branch (test) bevindt
+                    def currentBranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                    if (currentBranch != testBranchName) {
+                        error('Jenkins is niet in de juiste branch (test).')
+                    }
+                    
+                    // Voer de commit- en push-stappen uit naar de main branch
                     sh "git config user.name 'bartheesbeen'"
                     sh "git config user.email '509679@student.fontys.nl'"
-                    sh "git add ."
-                    sh "git commit -m 'Update HTML files'"
-                    sh "git push ${gitCredentials}@github.com/bartheesbeen/pipeline-ubuntu.git ${branchName}"
+                    sh "git checkout ${mainBranchName}"
+                    sh "git merge ${testBranchName} -m 'Merge test branch into main'"
+                    sh "git push origin ${mainBranchName}"
                 }
             }
         }
