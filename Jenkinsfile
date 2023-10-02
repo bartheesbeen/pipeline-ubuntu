@@ -24,8 +24,9 @@ pipeline {
             steps {
                 // Execute shell commands to delete HTML files on the server.
                 script {
-                    sshpass(script: 'ssh -o StrictHostKeyChecking=no student@10.10.10.50 \'cd /var/www/html && rm -f *.html\'', 
-                            password: 'student')
+                    sshagent(['abb4f129-cb4f-496c-86d0-01a08e343ff5']) {
+                        sh 'ssh -o StrictHostKeyChecking=no student@10.10.10.50 \'cd /var/www/html && rm -f *.html\''
+                    }
                 }
             }
         }
@@ -34,9 +35,12 @@ pipeline {
             steps {
                 // Copy HTML files from the checked-out repository to the server.
                 script {
-                    sh 'scp -r /var/lib/jenkins/caches/git-a660bf4669a1e2454fe8754a08ca571a.html student@10.10.10.50:/var/www/html'
+                    sshagent(['your-ssh-credentials-id']) {
+                        sh 'scp -r /var/lib/jenkins/caches/git-a660bf4669a1e2454fe8754a08ca571a.html student@10.10.10.50:/var/www/html'
+                    }
                 }
             }
         }
     }
+}
 }
