@@ -5,10 +5,10 @@ pipeline {
         stage('Checkout from GitHub') {
             steps {
                 script {
-                    def gitCredentialsId = 'your-credentials-id' // Vervang 'your-credentials-id' door de ID van je Git-credentials in Jenkins
+                    def gitCredentialsId = 'f9b6e8ca-d43d-43ae-9939-1798f9273bf7' // Vervang 'your-credentials-id' door de ID van je Git-credentials in Jenkins
                     checkout([$class: 'GitSCM', 
                               branches: [[name: 'test']], 
-                              userRemoteConfigs: [[url: 'https://github.com/bartheesbeen/pipeline-ubuntu.git', credentialsId: f9b6e8ca-d43d-43ae-9939-1798f9273bf7]]
+                              userRemoteConfigs: [[url: 'https://github.com/bartheesbeen/pipeline-ubuntu.git', credentialsId: gitCredentialsId]]
                     ])
                 }
             }
