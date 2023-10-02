@@ -4,17 +4,16 @@ pipeline {
     stages {
         stage('Checkout from GitHub') {
             steps {
-                // Check out your code from GitHub.
                 script {
                     def scmVars = checkout([
                         $class: 'GitSCM',
-                        branches: [[name: 'test']], // You can change the branch as needed
+                        branches: [[name: 'test']], // Je kunt de gewenste branch aanpassen
                         doGenerateSubmoduleConfigurations: false,
                         extensions: [
                             [$class: 'CloneOption', noTags: false, reference: '', shallow: false],
                             [$class: 'CleanBeforeCheckout'],
                         ],
-                        userRemoteConfigs: [[url: 'https://github.com/bartheesbeen/pipeline-ubuntu.git']] // Replace with your GitHub repo URL
+                        userRemoteConfigs: [[url: 'https://github.com/bartheesbeen/pipeline-ubuntu.git']] // Vervang dit door de URL van je GitHub-repo
                     ])
                 }
             }
@@ -22,14 +21,21 @@ pipeline {
         
         stage('Overwrite HTML files on Test Server') {
             steps {
-                // Copy HTML files from the checked-out repository to the server, overwriting existing files.
-                sh 'sshpass -p student scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Pipeline_test/index.html student@10.10.10.53:/var/www/html/'
+                sh 'sshpass -p student scp -r /var/lib/jenkins/workspace/Pipeline_test/*.html student@10.10.10.53:/var/www/html/'
+            }
+        }
+        
+        stage('Merge to Main') {
+            when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                script {
+                    // Merge de wijzigingen van de 'test' branch naar de 'main' branch
+                    sh 'git checkout main'
+                    sh 'git merge test'
+                    sh 'git push origin main'
+                }
             }
         }
     }
-    post {
-        always {
-            input "Wil je doorgaan met het deployen naar de test server?"
-        }
-    }
-}
