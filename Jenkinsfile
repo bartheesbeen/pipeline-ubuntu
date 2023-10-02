@@ -31,12 +31,13 @@ pipeline {
         always {
             script {
                 def userInput = input(
-                    id: 'deployToTest',
                     message: 'Wil je doorgaan met het deployen naar de test server?',
-                    parameters: [booleanParam(defaultValue: true, description: 'Doorgaan?', name: 'DeployToTest')]
+                    parameters: [
+                        [$class: 'BooleanParameterDefinition', defaultValue: true, description: 'Doorgaan?', name: 'DeployToTest']
+                    ]
                 )
 
-                if (userInput.DeployToTest) {
+                if (userInput == true) {
                     // Push naar de 'test'-branch in de externe repository
                     sh 'git push origin test'
                 } else {
