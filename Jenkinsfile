@@ -43,4 +43,9 @@ pipeline {
                     sh "git config user.email '509679@student.fontys.nl'"
                     sh "git checkout ${mainBranchName}" // Schakel over naar de main branch
                     sh "git merge ${testBranchName} -m 'Merge test branch into main'" // Voer een merge uit van de test branch naar main
-                    sh "git push origin ${mainBranchName}" // Push de wijzigingen naar de
+                    sh "git push origin ${mainBranchName}" // Push de wijzigingen naar de main branch
+                }
+            }
+        }
+    }
+}
