@@ -29,7 +29,21 @@ pipeline {
     }
     post {
         always {
-            input "Wil je doorgaan met het deployen naar de test server?"
+            script {
+                def userInput = input(
+                    id: 'deployToTest',
+                    message: 'Wil je doorgaan met het deployen naar de test server?',
+                    parameters: [boolean(defaultValue: true, description: 'Doorgaan?', name: 'DeployToTest')]
+                )
+
+                if (userInput.DeployToTest) {
+                    // Push naar de 'test'-branch in de externe repository
+                    sh 'git push origin test'
+                } else {
+                    currentBuild.result = 'ABORTED'
+                    error('Deployment naar test geannuleerd')
+                }
+            }
         }
     }
 }
