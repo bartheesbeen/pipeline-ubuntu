@@ -23,7 +23,7 @@ pipeline {
         stage('Delete HTML files on Server') {
             steps {
                 // Execute shell commands to delete HTML files on the server.
-                sh 'ssh student@10.10.10.50 "cd /var/www/html && rm -f *.html"'
+                sh 'ssh -o StrictHostKeyChecking=no student@10.10.10.50 "cd /var/www/html && rm -f *.html"'
             }
         }
 
