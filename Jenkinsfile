@@ -20,6 +20,12 @@ pipeline {
             }
         }
 
+        stage('User Input') {
+            steps {
+                input "Wil je doorgaan met het deployen naar de productie server?"
+            }
+        }
+
         stage('Overwrite HTML files on Server') {
             steps {
                 // Copy HTML files from the checked-out repository to the server, overwriting existing files.
