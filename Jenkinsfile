@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout from GitHub') {
             steps {
-                // Check out your code from GitHub.
+                // Code checken in Github.
                 script {
                     def scmVars = checkout([
                         $class: 'GitSCM',
@@ -14,7 +14,7 @@ pipeline {
                             [$class: 'CloneOption', noTags: false, reference: '', shallow: false],
                             [$class: 'CleanBeforeCheckout'],
                         ],
-                        userRemoteConfigs: [[url: 'https://github.com/bartheesbeen/pipeline-ubuntu.git']] // Replace with your GitHub repo URL
+                        userRemoteConfigs: [[url: 'https://github.com/bartheesbeen/pipeline-ubuntu.git']] 
                     ])
                 }
             }
@@ -28,7 +28,7 @@ pipeline {
 
         stage('Overwrite HTML files on Server') {
             steps {
-                // Copy HTML files from the checked-out repository to the server, overwriting existing files.
+                // Overwrite bestaande HTML files.
                 sh 'sshpass -p student scp -r /var/lib/jenkins/workspace/Pipeline_main/*.html student@10.10.10.50:/var/www/html/'
             }
         }
